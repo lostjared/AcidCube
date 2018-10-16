@@ -8,7 +8,7 @@ OBJ_FILES := $(addprefix ,$(notdir $(CPP_FILES:.cpp=.o)))
 	$(CXX) $(CFLAGS) -c -o $@ $<
   
 all: $(OBJ_FILES) 
-	$(CXX) $(OBJ_FILES)  $(LDADD) -o acid_cube )
+	$(CXX) $(OBJ_FILES)  $(LDADD) -o acid_cube
 
 clean:
 	rm -f *.o ./acid_cube
