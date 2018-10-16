@@ -376,6 +376,9 @@ int main(int argc, char **argv) {
     int opt = 0;
     int v_w = 640;
     int v_h = 480;
+    
+    ac::fill_filter_map();
+    
     if(argc > 1) {
         while((opt = getopt(argc, argv, "W:H:w:h:f:i:vcCS")) != -1) {
             switch(opt) {
