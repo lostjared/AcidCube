@@ -1,5 +1,5 @@
 CFLAGS= -std=c++11 -O3 `pkg-config glew sdl2 acidcam opencv --cflags`
-LDADD = `pkg-config glew sdl2 opencv acidcam --libs` -lGL -lGLU
+LDADD = `pkg-config glew sdl2 acidcam opencv --libs` -lGL -lGLU
 
 CPP_FILES := $(wildcard *.cpp)
 OBJ_FILES := $(addprefix ,$(notdir $(CPP_FILES:.cpp=.o)))
@@ -8,7 +8,7 @@ OBJ_FILES := $(addprefix ,$(notdir $(CPP_FILES:.cpp=.o)))
 	$(CXX) $(CFLAGS) -c -o $@ $<
   
 all: $(OBJ_FILES) 
-	$(CXX) $(OBJ_FILES)  -o acid_cube  $(LDADD)
+	$(CXX) $(OBJ_FILES)  $(LDADD) -o acid_cube )
 
 clean:
 	rm -f *.o ./acid_cube
