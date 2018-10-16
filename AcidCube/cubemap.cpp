@@ -9,8 +9,6 @@
 #define HEIGHT 720
 #include<opencv2/opencv.hpp>
 
-GLuint textures[10];
-GLuint background_texture;
 GLuint logo_texture;
 float spin_x = 0, spin_y = 0, spin_z = 0;
 float dist = -3.0;
@@ -173,8 +171,6 @@ unsigned int timer_callback(unsigned int t) {
     if(MX_i::PollController(MX_i::B_2)) {
         filter_mode = (filter_mode == 0) ? 1 : 0;
     }
-    
-    
     return t;
 }
 
