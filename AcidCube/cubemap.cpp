@@ -200,7 +200,7 @@ unsigned int timer_callback(unsigned int t) {
 
 void idle() {
     
-    if(MX_i::PollController(MX_i::B_1)) {
+    if(start_wait == false && MX_i::PollController(MX_i::B_1)) {
         start_wait = true;
         MX_i::SetWindowTitle("Acid Cube");
     }
