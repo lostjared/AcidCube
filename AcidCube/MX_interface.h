@@ -18,6 +18,7 @@ namespace MX_i {
     unsigned int GetTicks();
     enum Buttons { B_UP=0, B_DOWN, B_LEFT, B_RIGHT, B_1,B_2, B_3, B_4, B_5, B_6};
     bool PollController(enum Buttons b);
+    void SetWindowTitle(const char *src);
 }
 
 #endif

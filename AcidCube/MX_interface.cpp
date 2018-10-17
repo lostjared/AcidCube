@@ -54,6 +54,11 @@ namespace MX_i {
         // SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
     }
     
+    void SetWindowTitle(const char *src) {
+        SDL_SetWindowTitle(window, src);
+    }
+    
+    
     bool done;
     
     void Loop() {
@@ -136,7 +141,7 @@ namespace MX_i {
                                 break;
                                 break;
                             case SDLK_a:
-                                Buttons[B_1] = true;
+                                 Buttons[B_1] = true;
                                 break;
                             case SDLK_s:
                                 Buttons[B_2] = true;

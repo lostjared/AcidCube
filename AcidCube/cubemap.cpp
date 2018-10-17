@@ -135,12 +135,9 @@ GLfloat texCoords[] = {
     1,1
 };
 
-
 GLfloat rot[4] = {0,-10,0,0};//{ -25, -20, 0, 0};
 int width=WIDTH, height=HEIGHT;
 float xRot = 1.0;
-
-
 cv::VideoCapture cap;
 static int filter_index = 0;
 
@@ -164,10 +161,6 @@ unsigned int timer_callback(unsigned int t) {
             ++axis;
     }
     
-    if(MX_i::PollController(MX_i::B_1)) {
-        start_wait = true;
-    }
-    
     if(MX_i::PollController(MX_i::B_2)) {
         filter_mode = (filter_mode == 0) ? 1 : 0;
     }
@@ -176,7 +169,13 @@ unsigned int timer_callback(unsigned int t) {
 
 void idle() {
     
+    if(MX_i::PollController(MX_i::B_1)) {
+        start_wait = true;
+        MX_i::SetWindowTitle("Acid Cube");
+    }
+    
     if(start_wait == true && start == true) {
+        
         spin_x += 6.0f;
         dist -= 0.1f;
         if(dist <= -20.0f) {
@@ -452,6 +451,7 @@ int main(int argc, char **argv) {
     }
     MX_i::Init(&argc, argv, cx, cy);
     MX_i::SetCallbacks(render, idle, resize);
+    MX_i::SetWindowTitle("Acid Cube - Press the A key to Start");
     init();
     MX_i::Loop();
     clean();
