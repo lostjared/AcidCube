@@ -24,10 +24,12 @@
 #include<unistd.h>
 #include "MX_interface.h"
 #include<acidcam/ac.h>
-#define WIDTH 1280
-#define HEIGHT 720
 #include<opencv2/opencv.hpp>
 
+void updateTexture(cv::Mat &frame, GLuint &tex);
+void genTextureFromFrame(cv::Mat &frame, GLuint &tex);
+
+// variables
 GLuint logo_texture;
 float spin_x = 0, spin_y = 0, spin_z = 0;
 float dist = -3.0;
@@ -35,24 +37,40 @@ int axis = 0;
 bool start = true, going = false;
 bool start_wait = false;
 int filter_mode = 0;
-
 enum class ProgramMode { CAMERA, VIDEO };
 ProgramMode prog_mode = ProgramMode::VIDEO;
-
-void updateTexture(cv::Mat &frame, GLuint &tex);
-void genTextureFromFrame(cv::Mat &frame, GLuint &tex);
-
+float xRot = 1.0;
+cv::VideoCapture cap;
+static int filter_index = 0;
 std::string filename;
-
 namespace MX_i {
     int FPS = 30;
     float dt = 0;
 }
-
 using MX_i::FPS;
 using MX_i::dt;
 int old_t = 0;
+float intro_zPos = 0, intro_yRot = 0;
 
+
+GLfloat frontFace[] = {
+    -1.0f, -1.0f, 1.0f, // front face
+    1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f, 1.0f,
+    -1.0f, -1.0f, 1.0f,
+    1.0f, -1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f
+};
+
+GLfloat frontTexture[] = {
+    0, 0, // front
+    1, 1,
+    0, 1,
+    
+    0, 0,
+    1, 0,
+    1, 1,
+};
 
 GLfloat vertices[] = { -1.0f, -1.0f, 1.0f, // front face
     1.0f, 1.0f, 1.0f,
@@ -154,12 +172,6 @@ GLfloat texCoords[] = {
     1,1
 };
 
-GLfloat rot[4] = {0,-10,0,0};//{ -25, -20, 0, 0};
-int width=WIDTH, height=HEIGHT;
-float xRot = 1.0;
-cv::VideoCapture cap;
-static int filter_index = 0;
-
 unsigned int timer_callback(unsigned int t) {
     
     if(MX_i::PollController(MX_i::B_LEFT)) {
@@ -217,27 +229,6 @@ void idle() {
     dt = passed;
     MX_i::Redisplay();
 }
-
-GLfloat frontFace[] = {
-    -1.0f, -1.0f, 1.0f, // front face
-    1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f,
-    -1.0f, -1.0f, 1.0f,
-    1.0f, -1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f
-};
-
-GLfloat frontTexture[] = {
-    0, 0, // front
-    1, 1,
-    0, 1,
-    
-    0, 0,
-    1, 0,
-    1, 1,
-};
-
-float intro_zPos = 0, intro_yRot = 0;
 
 void renderIntro() {
     
