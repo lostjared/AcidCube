@@ -248,7 +248,7 @@ void renderIntro() {
         cv::Mat outframe;
         cv::flip(frame,outframe, 0);
         frame = outframe.clone();
-        ac::draw_func[filter_index](frame);
+        ac::DrawFilter(filter_index, frame);
         updateTexture(frame, logo_texture);
         
         /*
