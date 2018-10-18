@@ -388,8 +388,13 @@ int main(int argc, char **argv) {
     ac::fill_filter_map();
     
     if(argc > 1) {
-        while((opt = getopt(argc, argv, "W:H:w:h:f:i:vcCSs:")) != -1) {
+        while((opt = getopt(argc, argv, "lW:H:w:h:f:i:vcCSs:")) != -1) {
             switch(opt) {
+                case 'l':
+                    for(int i = 0; i < ac::draw_max-5; ++i)
+                        std::cout << std::setw(3) << i << "\t " << ac::draw_strings[i] << "\n";
+                    exit(EXIT_SUCCESS);
+                    break;
                 case 'w':
                     cx = atoi(optarg);
                     if(cx < 128) {

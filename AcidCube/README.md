@@ -16,6 +16,7 @@ program arguments
 	-S rotation mode spin
 	-C rotation mode cube 
 	-s rotation speed
+	-l list filters
 
 examples
 
@@ -24,6 +25,14 @@ examples
 or
 
 	$ ./acid_cube -w 640 -h 360 -c -f 452
+
+or
+	$ ./acid_cube -w 1280 -h 720 -v -i filename.mp4 -s 0.9
+
+or
+	$ ./acid_cube -l
+
+
 
 Up/Down arrow keys to change rotation mode
 Left/Right arrow keys to toggle between filters
