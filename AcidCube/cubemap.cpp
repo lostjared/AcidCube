@@ -246,7 +246,6 @@ void renderIntro() {
     if(frame_read == false && prog_mode == ProgramMode::VIDEO) {
         cap.set(CV_CAP_PROP_POS_FRAMES,1);
         frame_read = cap.read(frame);
-        std::cout << "video reset...\n";
     }
     if(frame_read == false && prog_mode == ProgramMode::CAMERA) {
         std::cerr << "Could not read frame quitting...\n";
