@@ -51,7 +51,7 @@ using MX_i::FPS;
 using MX_i::dt;
 int old_t = 0;
 float intro_zPos = 0, intro_yRot = 0;
-float movement_speed = 6.0f;
+float movement_speed = 0.9f;
 
 GLfloat frontFace[] = {
     -1.0f, -1.0f, 1.0f, // front face
@@ -207,16 +207,16 @@ void idle() {
     
     if(start_wait == true && start == true) {
         
-        spin_x += movement_speed;
-        dist -= 0.1f;
+        spin_x += movement_speed * dt;
+        dist -= 0.01f * dt;
         if(dist <= -20.0f) {
             going = true;
             start = false;
         }
     }
     else if(going == true) {
-        dist += 0.01f;
-        spin_x -= movement_speed;
+        dist += 0.0009 * dt;
+        spin_x -= movement_speed * dt;
         if(dist > 1.0f) {
             going = false;
             start = true;
