@@ -1,10 +1,10 @@
 
 Press 'a' key to start animation
-
 Press 's' key to switch rotation mode
 
-program arguments
+program arguments:
 
+	-l list filters
 	-w window width
 	-h window height
 	-W resized video width
@@ -16,7 +16,7 @@ program arguments
 	-S rotation mode spin
 	-C rotation mode cube 
 	-s rotation speed
-	-l list filters
+	-u subfilter
 
 examples
 

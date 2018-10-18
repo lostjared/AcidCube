@@ -375,7 +375,7 @@ void clean() {
 }
 
 void output_info(std::string name) {
-    std::cout << name << " " << ACID_CUBE_VERSION << " arguments:\n-w window width\n-h window height\n-W resized video width\n-H resized video height\n-f starting filter index\n-i filename\n-c web camera mode\n-v video file mode\n-S rotation mode spin\n-C rotation mode cube\n-s rotation speed\n";
+    std::cout << name << " " << ACID_CUBE_VERSION << " arguments:\n-l list files\n-w window width\n-h window height\n-W resized video width\n-H resized video height\n-f starting filter index\n-i filename\n-c web camera mode\n-v video file mode\n-S rotation mode spin\n-C rotation mode cube\n-s rotation speed\n-u subfilter\n";
 }
 
 int main(int argc, char **argv) {
@@ -388,7 +388,7 @@ int main(int argc, char **argv) {
     ac::fill_filter_map();
     
     if(argc > 1) {
-        while((opt = getopt(argc, argv, "lW:H:w:h:f:i:vcCSs:")) != -1) {
+        while((opt = getopt(argc, argv, "lW:H:w:h:f:i:vcCSs:u:")) != -1) {
             switch(opt) {
                 case 'l':
                     for(int i = 0; i < ac::draw_max-5; ++i)
@@ -443,6 +443,15 @@ int main(int argc, char **argv) {
                     break;
                 case 'H':
                     v_h = atoi(optarg);
+                    break;
+                case 'u':
+                    int value = atoi(optarg);
+                    if(value >= 0 && value < ac::draw_max-5)
+                        ac::setSubFilter(value);
+                    else {
+                        std::cerr << "Error subfilter out of range.\n";
+                        exit(EXIT_FAILURE);
+                    }
                     break;
             }
         }
