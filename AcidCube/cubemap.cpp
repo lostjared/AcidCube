@@ -51,7 +51,7 @@ using MX_i::FPS;
 using MX_i::dt;
 int old_t = 0;
 float intro_zPos = 0, intro_yRot = 0;
-
+float movement_speed = 6.0f;
 
 GLfloat frontFace[] = {
     -1.0f, -1.0f, 1.0f, // front face
@@ -207,7 +207,7 @@ void idle() {
     
     if(start_wait == true && start == true) {
         
-        spin_x += 6.0f;
+        spin_x += movement_speed;
         dist -= 0.1f;
         if(dist <= -20.0f) {
             going = true;
@@ -216,7 +216,7 @@ void idle() {
     }
     else if(going == true) {
         dist += 0.01f;
-        spin_x -= 6.0f;
+        spin_x -= movement_speed;
         if(dist > 1.0f) {
             going = false;
             start = true;
@@ -376,7 +376,7 @@ void clean() {
 }
 
 void output_info(std::string name) {
-    std::cout << name << " " << ACID_CUBE_VERSION << " arguments:\n-w window width\n-h window height\n-W resized video width\n-H resized video height\n-f starting filter index\n-i filename\n-c web camera mode\n-v video file mode\n-S rotation mode spin\n-C rotation mode cube\n";
+    std::cout << name << " " << ACID_CUBE_VERSION << " arguments:\n-w window width\n-h window height\n-W resized video width\n-H resized video height\n-f starting filter index\n-i filename\n-c web camera mode\n-v video file mode\n-S rotation mode spin\n-C rotation mode cube\n-s rotation speed\n";
 }
 
 int main(int argc, char **argv) {
@@ -389,7 +389,7 @@ int main(int argc, char **argv) {
     ac::fill_filter_map();
     
     if(argc > 1) {
-        while((opt = getopt(argc, argv, "W:H:w:h:f:i:vcCS")) != -1) {
+        while((opt = getopt(argc, argv, "W:H:w:h:f:i:vcCSs:")) != -1) {
             switch(opt) {
                 case 'w':
                     cx = atoi(optarg);
@@ -409,6 +409,13 @@ int main(int argc, char **argv) {
                     filter_index = atoi(optarg);
                     if(filter_index < 0 || filter_index > ac::draw_max-6) {
                         std::cerr << "Error invalid filter number...\n";
+                        exit(EXIT_FAILURE);
+                    }
+                    break;
+                case 's':
+                    movement_speed = atof(optarg);
+                    if(movement_speed == 0) {
+                        std::cerr << "movement speed cannot be zero..\n";
                         exit(EXIT_FAILURE);
                     }
                     break;

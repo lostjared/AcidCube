@@ -15,6 +15,7 @@ program arguments
 	-v video file mode
 	-S rotation mode spin
 	-C rotation mode cube 
+	-s rotation speed
 
 examples
 
