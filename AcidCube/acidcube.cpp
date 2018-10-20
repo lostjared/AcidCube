@@ -15,7 +15,7 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  
-*/
+ */
 
 #define ACID_CUBE_VERSION "v1.0"
 #include<cstdio>
@@ -41,6 +41,7 @@ enum class ProgramMode { CAMERA, VIDEO };
 ProgramMode prog_mode = ProgramMode::VIDEO;
 float xRot = 1.0;
 cv::VideoCapture cap;
+cv::VideoWriter writer;
 static int filter_index = 0;
 std::string filename;
 namespace MX_i {
@@ -52,6 +53,7 @@ using MX_i::dt;
 int old_t = 0;
 float intro_zPos = 0, intro_yRot = 0;
 float movement_speed = 0.9f;
+int cx = 0, cy = 0;
 
 GLfloat frontFace[] = {
     -1.0f, -1.0f, 1.0f, // front face
@@ -324,6 +326,17 @@ void render() {
     renderIntro();
     glPopMatrix();
     MX_i::SwapBuffers();
+    
+    if(start_wait == true && writer.isOpened()) {
+        cv::Mat img;
+        img.create(cy,cx,CV_8UC3);
+        glPixelStorei(GL_PACK_ALIGNMENT, (img.step & 3) ? 1 : 4);
+        glPixelStorei(GL_PACK_ROW_LENGTH, img.step/img.elemSize());
+        glReadPixels(0, 0, img.cols, img.rows, GL_BGR, GL_UNSIGNED_BYTE, img.data);
+        cv::Mat flipped;
+        cv::flip(img, flipped, 0);
+        writer.write(flipped);
+    }
 }
 
 void resize(int w, int h) {
@@ -379,17 +392,17 @@ void output_info(std::string name) {
 }
 
 int main(int argc, char **argv) {
-    int cx = 0;
-    int cy = 0;
     int opt = 0;
     int v_w = 640;
     int v_h = 480;
-    
     ac::fill_filter_map();
-    
+    std::string fval;
     if(argc > 1) {
-        while((opt = getopt(argc, argv, "lW:H:w:h:f:i:vcCSs:u:")) != -1) {
+        while((opt = getopt(argc, argv, "lW:H:w:h:f:i:vcCSs:u:o:")) != -1) {
             switch(opt) {
+                case 'o':
+                    fval = optarg;
+                    break;
                 case 'l':
                     for(int i = 0; i < ac::draw_max-5; ++i)
                         std::cout << std::setw(3) << i << "\t " << ac::draw_strings[i] << "\n";
@@ -444,7 +457,7 @@ int main(int argc, char **argv) {
                 case 'H':
                     v_h = atoi(optarg);
                     break;
-                case 'u':
+                case 'u': {
                     int value = atoi(optarg);
                     if(value >= 0 && value < ac::draw_max-5)
                         ac::setSubFilter(value);
@@ -452,6 +465,7 @@ int main(int argc, char **argv) {
                         std::cerr << "Error subfilter out of range.\n";
                         exit(EXIT_FAILURE);
                     }
+                }
                     break;
             }
         }
@@ -475,6 +489,14 @@ int main(int argc, char **argv) {
     }
     cap.set(CV_CAP_PROP_FRAME_WIDTH, v_w);
     cap.set(CV_CAP_PROP_FRAME_HEIGHT, v_h);
+    if(fval.length()>0) {
+        writer.open(fval, CV_FOURCC('m', 'p', '4', 'v'), 60, cv::Size(cx, cy), true);
+        if(!writer.isOpened()) {
+            std::cerr << "Could not open file: " << fval << "\n";
+            exit(EXIT_FAILURE);
+        }
+    }
+    
     if(cx <= 0 || cy <= 0 ) {
         std::cerr << "Error must pass valid resolution\n";
         return -1;
