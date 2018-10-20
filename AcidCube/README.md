@@ -17,6 +17,7 @@ program arguments:
 	-C rotation mode cube 
 	-s rotation speed
 	-u subfilter
+	-b draw background
 
 examples
 

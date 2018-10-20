@@ -54,6 +54,7 @@ int old_t = 0;
 float intro_zPos = 0, intro_yRot = 0;
 float movement_speed = 0.9f;
 int cx = 0, cy = 0;
+bool background = false;
 
 GLfloat frontFace[] = {
     -1.0f, -1.0f, 1.0f, // front face
@@ -260,18 +261,16 @@ void renderIntro() {
         frame = outframe.clone();
         ac::DrawFilter(filter_index, frame);
         updateTexture(frame, logo_texture);
-        
-        /*
-         glBindTexture(GL_TEXTURE_2D, logo_texture);
-         glEnableClientState(GL_VERTEX_ARRAY);
-         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-         glVertexPointer(3, GL_FLOAT, 0, frontFace);
-         glTexCoordPointer(2, GL_FLOAT, 0, frontTexture);
-         glDrawArrays(GL_TRIANGLES, 0, 6);
-         glDisableClientState(GL_VERTEX_ARRAY);
-         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-         */
-        
+        if(background == true) {
+            glBindTexture(GL_TEXTURE_2D, logo_texture);
+            glEnableClientState(GL_VERTEX_ARRAY);
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            glVertexPointer(3, GL_FLOAT, 0, frontFace);
+            glTexCoordPointer(2, GL_FLOAT, 0, frontTexture);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            glDisableClientState(GL_VERTEX_ARRAY);
+            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        }
         glEnable(GL_DEPTH_TEST);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -388,7 +387,7 @@ void clean() {
 }
 
 void output_info(std::string name) {
-    std::cout << name << " " << ACID_CUBE_VERSION << " arguments:\n-l list files\n-w window width\n-h window height\n-W resized video width\n-H resized video height\n-f starting filter index\n-i filename\n-c web camera mode\n-v video file mode\n-S rotation mode spin\n-C rotation mode cube\n-s rotation speed\n-u subfilter\n";
+    std::cout << name << " " << ACID_CUBE_VERSION << " arguments:\n-l list files\n-w window width\n-h window height\n-W resized video width\n-H resized video height\n-f starting filter index\n-i filename\n-c web camera mode\n-v video file mode\n-S rotation mode spin\n-C rotation mode cube\n-s rotation speed\n-u subfilter\n-b draw background\n";
 }
 
 int main(int argc, char **argv) {
@@ -398,13 +397,16 @@ int main(int argc, char **argv) {
     ac::fill_filter_map();
     std::string fval;
     if(argc > 1) {
-        while((opt = getopt(argc, argv, "lW:H:w:h:f:i:vcCSs:u:o:")) != -1) {
+        while((opt = getopt(argc, argv, "lW:H:w:h:f:i:vcCSs:u:o:b")) != -1) {
             switch(opt) {
                 case 'o':
                     fval = optarg;
                     if(fval.find(".mov") == std::string::npos) {
                         fval += ".mov";
                     }
+                    break;
+                case 'b':
+                    background = true;
                     break;
                 case 'l':
                     for(int i = 0; i < ac::draw_max-5; ++i)
