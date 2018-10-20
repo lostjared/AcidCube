@@ -402,6 +402,9 @@ int main(int argc, char **argv) {
             switch(opt) {
                 case 'o':
                     fval = optarg;
+                    if(fval.find(".mov") == std::string::npos) {
+                        fval += ".mov";
+                    }
                     break;
                 case 'l':
                     for(int i = 0; i < ac::draw_max-5; ++i)
