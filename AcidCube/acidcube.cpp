@@ -203,14 +203,15 @@ unsigned int timer_callback(unsigned int t) {
 
 void idle() {
     
+   // dt = 30;
+    
     if(start_wait == false && MX_i::PollController(MX_i::B_1)) {
         start_wait = true;
         MX_i::SetWindowTitle("Acid Cube");
     }
     
     if(start_wait == true && start == true) {
-        
-        spin_x += movement_speed * dt;
+        spin_x += movement_speed dt;
         dist -= 0.01f * dt;
         if(dist <= -20.0f) {
             going = true;
@@ -219,7 +220,7 @@ void idle() {
     }
     else if(going == true) {
         dist += 0.0009 * dt;
-        spin_x -= movement_speed * dt;
+        spin_x -= movement_speed; * dt;
         if(dist > 1.0f) {
             going = false;
             start = true;
@@ -380,6 +381,7 @@ void  init() {
     }
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     MX_i::CreateTimer(timer_callback, 150);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
 }
 
 void clean() {

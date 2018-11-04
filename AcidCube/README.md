@@ -18,6 +18,7 @@ program arguments:
 	-s rotation speed
 	-u subfilter
 	-b draw background
+	-o output video filename
 
 examples
 
