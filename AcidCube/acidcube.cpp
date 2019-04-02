@@ -211,7 +211,7 @@ void idle() {
     }
     
     if(start_wait == true && start == true) {
-        spin_x += movement_speed dt;
+        spin_x += movement_speed; // dt;
         dist -= 0.01f * dt;
         if(dist <= -20.0f) {
             going = true;
@@ -220,7 +220,7 @@ void idle() {
     }
     else if(going == true) {
         dist += 0.0009 * dt;
-        spin_x -= movement_speed; * dt;
+        spin_x -= movement_speed; //* dt;
         if(dist > 1.0f) {
             going = false;
             start = true;
