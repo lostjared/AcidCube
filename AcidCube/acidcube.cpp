@@ -248,7 +248,7 @@ void renderIntro() {
     cv::Mat frame;
     bool frame_read = cap.read(frame);
     if(frame_read == false && prog_mode == ProgramMode::VIDEO) {
-        cap.set(CV_CAP_PROP_POS_FRAMES,1);
+        cap.set(cv::CAP_PROP_POS_FRAMES,1);
         frame_read = cap.read(frame);
     }
     if(frame_read == false && prog_mode == ProgramMode::CAMERA) {
@@ -494,10 +494,10 @@ int main(int argc, char **argv) {
         output_info(argv[0]);
         exit(EXIT_SUCCESS);
     }
-    cap.set(CV_CAP_PROP_FRAME_WIDTH, v_w);
-    cap.set(CV_CAP_PROP_FRAME_HEIGHT, v_h);
+    cap.set(cv::CAP_PROP_FRAME_WIDTH, v_w);
+    cap.set(cv::CAP_PROP_FRAME_HEIGHT, v_h);
     if(fval.length()>0) {
-        writer.open(fval, CV_FOURCC('m', 'p', '4', 'v'), 60, cv::Size(cx, cy), true);
+        writer.open(fval, cv::VideoWriter::fourcc('m', 'p', '4', 'v'), 60, cv::Size(cx, cy), true);
         if(!writer.isOpened()) {
             std::cerr << "Could not open file: " << fval << "\n";
             exit(EXIT_FAILURE);
